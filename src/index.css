@@ -1,0 +1,107 @@
+/* General Styles */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 2rem;
+}
+
+/* App Container */
+.App {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Task Form */
+form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Button */
+button {
+  padding: 10px 14px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Task List */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #f9f9f9;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Task Title */
+li span {
+  flex: 1;
+  font-size: 16px;
+}
+
+/* Strike through completed */
+li span.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Delete Button */
+li button {
+  background-color: crimson;
+  font-size: 14px;
+}
+
+li button:hover {
+  background-color: darkred;
+}
+
+/* Filter Buttons */
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.filter-buttons button {
+  font-size: 14px;
+  padding: 8px 16px;
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.filter-buttons button.active {
+  background-color: #007bff;
+  color: white;
+}
