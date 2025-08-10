@@ -3,60 +3,85 @@ import Header from "./components/Header";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 import "./index.css";
+
 const App = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
   const [filter, setFilter] = useState("all");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     localStorage.setItem("Tasks", JSON.stringify(tasks));
   }, [tasks]);
-  useEffect(() => {
-    const storedTasks = localStorage.getItem("Tasks");
-    if (storedTasks) {
-      setTasks(JSON.parse(storedTasks));
-    }
-  }, []);
+
+  // useEffect(() => {
+  //   const storedTasks = localStorage.getItem("tasks");
+  //   if (storedTasks) {
+  //     setTasks(JSON.parse(storedTasks));
+  //   }
+  // }, []);
+
   const handleAddTask = (newTask) => {
     setTasks((prev) => [newTask, ...prev]);
+    setMessage("Task added successfully!");
+    setTimeout(() => setMessage(""), 3000);
   };
+
   const handleToggleTask = (id) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id
-        ? {
-            ...task,
-            completed: !task.completed,
-          }
-        : task
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
     );
-    setTasks(updatedTasks);
   };
+
   const handleDelete = (id) => {
-    const updateTask = tasks.filter((task) => task.id !== id);
-    setTasks(updateTask);
+    setTasks(tasks.filter((task) => task.id !== id));
   };
+
   const handleEdit = (id, newTitle) => {
-    const updatedEditTasks = tasks.map((task) =>
-      task.id === id ? { ...task, title: newTitle } : task
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, title: newTitle } : task
+      )
     );
-    setTasks(updatedEditTasks);
   };
-  const filtredTasks = tasks.filter((task) => {
+
+  const filteredTasks = tasks.filter((task) => {
     if (filter === "completed") return task.completed;
-    if (filter === "incompleted") return !task.completed;
+    if (filter === "incomplete") return !task.completed;
     return true;
   });
 
   return (
     <div className="App">
       <Header />
+      {message && (
+        <div
+          style={{
+            backgroundColor: "#d4edda",
+            color: "#155724",
+            padding: "10px",
+            borderRadius: "6px",
+            marginBottom: "10px",
+            border: "1px solid #c3e6cb",
+          }}
+        >
+          {message}
+        </div>
+      )}
+
       <TaskForm onAdd={handleAddTask} />
       <TaskList
-        tasks={filtredTasks}
+        tasks={filteredTasks}
         onToggle={handleToggleTask}
         onDelete={handleDelete}
         onEdit={handleEdit}
       />
-      <div className="filter-buttons">
+
+      <div className="filter-buttons" style={{ marginTop: "15px" }}>
         <button
           onClick={() => setFilter("all")}
           style={{ fontWeight: filter === "all" ? "bold" : "normal" }}
@@ -76,10 +101,10 @@ const App = () => {
         <button
           onClick={() => setFilter("incomplete")}
           style={{
-            fontWeight: filter === "all" ? "bold" : "normal",
+            fontWeight: filter === "incomplete" ? "bold" : "normal",
           }}
         >
-          incomplete
+          Incomplete
         </button>
       </div>
     </div>
