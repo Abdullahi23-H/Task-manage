@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import DeleteModel from "../DeleteModel";
+import DeleteModel from "./components/DeleteModel";
 
 const TaskList = ({ tasks, onToggle, onDelete, onEdit }) => {
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [isModelOpen, setIsModelOpen] = useState(false);
+  const [error, setError] = useState("");
 
   const confirmDelete = (taskId) => {
     setTaskToDelete(taskId);
@@ -22,12 +23,19 @@ const TaskList = ({ tasks, onToggle, onDelete, onEdit }) => {
   const handleEditStart = (task) => {
     setEditingId(task.id);
     setEditText(task.title);
+    setError("");
   };
   const handleEditSubmit = (e, id) => {
     e.preventDefault();
+    if (!editText.trim()) {
+      setError("Task title cannot be empty");
+      return;
+    }
+
     onEdit(id, editText.trim());
     setEditingId(null);
     setEditText("");
+    setError("");
   };
 
   return (
@@ -51,6 +59,7 @@ const TaskList = ({ tasks, onToggle, onDelete, onEdit }) => {
                     onChange={(e) => setEditText(e.target.value)}
                     autoFocus
                   />
+                  <button>Save</button>
                 </form>
               ) : (
                 <span
@@ -77,6 +86,13 @@ const TaskList = ({ tasks, onToggle, onDelete, onEdit }) => {
               >
                 X
               </button>
+              {editingId === task.id && error && (
+                <p
+                  style={{ color: "red", fontSize: "0.5rem", marginTop: "5px" }}
+                >
+                  {error}
+                </p>
+              )}
             </li>
           ))
         )}
